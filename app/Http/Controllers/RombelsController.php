@@ -12,7 +12,9 @@ class RombelsController extends Controller
      */
     public function index()
     {
-        //
+        $rombel = Rombels::all();
+
+        return view('pages.admin.rombel.index', compact('rombel'));
     }
 
     /**
@@ -20,7 +22,7 @@ class RombelsController extends Controller
      */
     public function create()
     {
-        //
+        return view('pages.admin.rombel.create');
     }
 
     /**
@@ -28,13 +30,21 @@ class RombelsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'rombel' => 'required',
+        ]);
+
+        Rombels::create([
+            'rombel' => $request->rombel
+        ]);
+
+        return redirect()->route('pages.admin.rombel.home')->with('success', 'Data Created Succesfuly');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Rombels $rombels)
+    public function show(Rombels $rombel)
     {
         //
     }
@@ -42,24 +52,36 @@ class RombelsController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Rombels $rombels)
+    public function edit(Rombels $rombel, $id)
     {
-        //
+        $rombel = Rombels::find($id);
+        return view('pages.admin.rombel.edit', compact('rombel'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Rombels $rombels)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'rombel' => 'required',
+        ]);
+
+        Rombels::where('id', $id)->update([
+            'rombel' => $request->rombel
+        ]);
+
+        return redirect()->route('admin.rombel.home')->with('success', 'Data Rombel Berhasil Di Ubah');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Rombels $rombels)
+    public function destroy(Rombels $rombel, $id)
     {
-        //
+        $rombel = Rombels::find($id);
+        $rombel->delete();
+
+        return redirect()->route('rombel.home')->with('success', 'Berhasil Menghapus Data');
     }
 }
